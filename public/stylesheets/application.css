@@ -1247,6 +1247,19 @@ li a.help:hover {
     background: linear-gradient(top, #a0070b 0%,#6a0406 70%); /* W3C */
     padding:0;
 }
+
+#account-nav li:first-child {
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#account-nav li:last-child {
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 #account-nav li a {
 	display:block;
 	padding:0px 9px 0px;
