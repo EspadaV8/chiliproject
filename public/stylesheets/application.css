@@ -1335,7 +1335,7 @@ input:-moz-placeholder {
 	height:38px;
         line-height:38px;
         background:url(../images/background_breadcrumb.png) repeat-x left top;
-        border-bottom: 1px #d9d9d9;
+    border-bottom: 1px #ddd solid;
         color:#777777;
         padding-left:15px;
         font-size:16px;
