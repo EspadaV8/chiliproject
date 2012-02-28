@@ -1129,10 +1129,6 @@ a:hover {
 #top-menu.open { /*IE 6-7 z-index stacking issue*/
 	z-index:5;
 }
-#account-nav {
-        display:block;
-        background:url(../images/background_top_navigation.png) repeat-x left top;
-}
 #logo {
         float:left;
         width:200px;
@@ -1241,7 +1237,15 @@ li a.help:hover {
 	padding-right:35px;
 }
 #account-nav li{
-	padding:0;
+    display:block;
+    background: #a0070b url(../images/background_top_navigation.png) repeat-x left top;
+    background: -moz-linear-gradient(top, #a0070b 0%, #6a0406 70%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0070b), color-stop(70%,#6a0406)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #a0070b 0%,#6a0406 70%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #a0070b 0%,#6a0406 70%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #a0070b 0%,#6a0406 70%); /* IE10+ */
+    background: linear-gradient(top, #a0070b 0%,#6a0406 70%); /* W3C */
+    padding:0;
 }
 #account-nav li a {
 	display:block;
