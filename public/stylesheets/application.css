@@ -1334,7 +1334,6 @@ input:-moz-placeholder {
 #breadcrumb {
 	height:38px;
         line-height:38px;
-        background:url(../images/background_breadcrumb.png) repeat-x left top;
     border-bottom: 1px #ddd solid;
         color:#777777;
         padding-left:15px;
@@ -1342,6 +1341,14 @@ input:-moz-placeholder {
         font-family:"Arial", Arial, sans-serif;
         font-style:normal;
         font-weight:normal;
+    background: #fff url(../images/background_breadcrumb.png) repeat-x left top;
+    background: -moz-linear-gradient(top, #fff 0%, #e4e4e4 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#e4e4e4)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#e4e4e4 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fff 0%,#e4e4e4 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fff 0%,#e4e4e4 100%); /* IE10+ */
+    background: linear-gradient(top, #fff 0%,#e4e4e4 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#e4e4e4',GradientType=0 ); /* IE6-9 */
 }
 #breadcrumb a {
         text-decoration:underline;
