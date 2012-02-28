@@ -1145,7 +1145,7 @@ a:hover {
         padding-right:15px;
 }
 #header {
-	background: url(../images/background_header.png) repeat-x 20px;
+	background: #242424;
 	height:43px;
 	font: arial,19px,white;
 }
