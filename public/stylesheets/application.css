@@ -1307,6 +1307,7 @@ input:-moz-placeholder {
     right:-1px;
 }
 #header li li {
+    background: transparent;
     float:none;
     white-space:nowrap;
     border-style:solid;
