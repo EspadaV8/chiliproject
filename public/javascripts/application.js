@@ -12,10 +12,12 @@ function checkAll (id, checked) {
 }
 
 function toggleCheckboxesBySelector(selector) {
-	boxes = $$(selector);
+    var boxes = jQuery(selector);
 	var all_checked = true;
-	for (i = 0; i < boxes.length; i++) { if (boxes[i].checked == false) { all_checked = false; } }
-	for (i = 0; i < boxes.length; i++) { boxes[i].checked = !all_checked; }
+    if(boxes.filter(':checked').size() < boxes.size()) {
+        all_checked = false;
+    }
+    boxes.prop('checked', !all_checked);
 }
 
 function setCheckboxesBySelector(checked, selector) {
