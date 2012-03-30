@@ -2,12 +2,13 @@
    Copyright (C) 2006-2008  Jean-Philippe Lang */
 
 function checkAll (id, checked) {
-	var els = Element.descendants(id);
-	for (var i = 0; i < els.length; i++) {
-    if (els[i].disabled==false) {
-      els[i].checked = checked;
-    }
-	}
+    var elements = jQuery('#' + id).find('*');
+    elements.each(function() {
+        var self = jQuery(this);
+        if(self.is(':disabled') === false) {
+            self.prop('checked', checked);
+        }
+    });
 }
 
 function toggleCheckboxesBySelector(selector) {
