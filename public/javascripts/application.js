@@ -20,13 +20,6 @@ function toggleCheckboxesBySelector(selector) {
     boxes.prop('checked', !all_checked);
 }
 
-function setCheckboxesBySelector(checked, selector) {
-  var boxes = $$(selector);
-  boxes.each(function(ele) {
-    ele.checked = checked;
-  });
-}
-
 function showAndScrollTo(id, focus) {
 	Element.show(id);
 	if (focus!=null) { Form.Element.focus(focus); }
