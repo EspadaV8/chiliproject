@@ -27,13 +27,13 @@ function showAndScrollTo(id, focus) {
 }
 
 function toggleRowGroup(el) {
-	var tr = Element.up(el, 'tr');
-	var n = Element.next(tr);
-	tr.toggleClassName('open');
-	while (n != undefined && !n.hasClassName('group')) {
-		Element.toggle(n);
-		n = Element.next(n);
-	}
+    var tr = jQuery(el).parents('tr');
+    var n = tr.next();
+    tr.toggleClass('open');
+    while (n.size() > 0 && !n.hasClass('group')) {
+        n.toggle();
+        n = n.next();
+    }
 }
 
 function collapseAllRowGroups(el) {
