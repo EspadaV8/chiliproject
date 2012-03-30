@@ -36,35 +36,17 @@ function toggleRowGroup(el) {
     }
 }
 
-function collapseAllRowGroups(el) {
-  var tbody = Element.up(el, 'tbody');
-  tbody.childElements('tr').each(function(tr) {
-    if (tr.hasClassName('group')) {
-      tr.removeClassName('open');
-    } else {
-      tr.hide();
-    }
-  })
-}
-
-function expandAllRowGroups(el) {
-  var tbody = Element.up(el, 'tbody');
-  tbody.childElements('tr').each(function(tr) {
-    if (tr.hasClassName('group')) {
-      tr.addClassName('open');
-    } else {
-      tr.show();
-    }
-  })
-}
-
 function toggleAllRowGroups(el) {
-	var tr = Element.up(el, 'tr');
-  if (tr.hasClassName('open')) {
-    collapseAllRowGroups(el);
-  } else {
-    expandAllRowGroups(el);
-  }
+    var tr = jQuery(el).parents('tr');
+    var tbody = jQuery(el).parents('tbody');
+    var trs = tbody.find('tr');
+    if (tr.hasClass('open')) {
+        trs.filter('.group').removeClass('open');
+        trs.filter(':not(.group)').hide();
+    } else {
+        trs.filter('.group').addClass('open');
+        trs.filter(':not(.group)').show();
+    }
 }
 
 function toggleFieldset(el) {
