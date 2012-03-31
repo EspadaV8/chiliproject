@@ -111,14 +111,8 @@ function moveTabRight(el) {
 }
 
 function moveTabLeft(el) {
-	var lis = Element.up(el, 'div.tabs').down('ul').childElements();
-	var i = 0;
-	while (i<lis.length && !lis[i].visible()) {
-		i++;
-	}
-	if (i>0) {
-		lis[i-1].show();
-	}
+    var lis = jQuery(el).parents('div.tabs').find('li');
+    lis.filter(':not(:visible):last').show();
 }
 
 function displayTabsButtons() {
