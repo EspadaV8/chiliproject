@@ -277,14 +277,15 @@ function observeProjectName() {
 }
 
 function observeProjectIdentifier() {
-  var f = function() {
-    if($('project_identifier').getValue() != '' && $('project_identifier').getValue() != generateProjectIdentifier()) {
-      projectIdentifierLocked = true;
-    } else {
-      projectIdentifierLocked = false;
-    }
-  };
-  Event.observe('project_identifier', 'keyup', f);
+    jQuery('#project_identifier').on('keyup', function() {
+        var projectID = jQuery('#project_identifier').val();
+
+        if((projectID !== '') && (projectID !== generateProjectIdentifier())) {
+            projectIdentifierLocked = true;
+        } else {
+            projectIdentifierLocked = false;
+        }
+    });
 }
 
 function observeParentIssueField(url) {
