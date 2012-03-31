@@ -141,9 +141,14 @@ function setPredecessorFieldsVisibility() {
 }
 
 function promptToRemote(text, param, url) {
-    value = prompt(text + ':');
+    var value = prompt(text + ':');
     if (value) {
-        new Ajax.Request(url + '?' + param + '=' + encodeURIComponent(value), {asynchronous:true, evalScripts:true});
+        jQuery.ajax({
+            url: url + '?' + param + '=' + encodeURIComponent(value),
+            type: 'POST',
+            dataType: 'script',
+            async: true
+        });
         return false;
     }
 }
