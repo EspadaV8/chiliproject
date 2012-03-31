@@ -116,22 +116,19 @@ function moveTabLeft(el) {
 }
 
 function displayTabsButtons() {
-	var lis;
-	var tabsWidth = 0;
-	var i;
-	$$('div.tabs').each(function(el) {
-		lis = el.down('ul').childElements();
-		for (i=0; i<lis.length; i++) {
-			if (lis[i].visible()) {
-				tabsWidth += lis[i].getWidth() + 6;
-			}
-		}
-		if ((tabsWidth < el.getWidth() - 60) && (lis[0].visible())) {
-			el.down('div.tabs-buttons').hide();
-		} else {
-			el.down('div.tabs-buttons').show();
-		}
-	});
+    jQuery('div.tabs').each(function() {
+        var self = jQuery(this);
+        var lis = self.find('li');
+        var tabsWidth = 0;
+        lis.filter(':visible').each(function() {
+            tabsWidth += jQuery(this).width() + 6;
+        });
+        if ((tabsWidth < (self.width() - 60)) && lis.filter(':first').is(':visible')) {
+            self.find('div.tabs-buttons').hide();
+        } else {
+            self.find('div.tabs-buttons').show();
+        }
+    });
 }
 
 function setPredecessorFieldsVisibility() {
