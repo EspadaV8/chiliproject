@@ -172,20 +172,20 @@ function expandScmEntry(id) {
 }
 
 function scmEntryClick(id) {
-    el = $(id);
-    if (el.hasClassName('open')) {
+    var el = jQuery('#' + id);
+    if (el.hasClass('open')) {
         collapseScmEntry(id);
-        el.addClassName('collapsed');
+        el.addClass('collapsed');
         return false;
-    } else if (el.hasClassName('loaded')) {
+    } else if (el.hasClass('loaded')) {
         expandScmEntry(id);
-        el.removeClassName('collapsed');
+        el.removeClass('collapsed');
         return false;
     }
-    if (el.hasClassName('loading')) {
+    if (el.hasClass('loading')) {
         return false;
     }
-    el.addClassName('loading');
+    el.addClass('loading');
     return true;
 }
 
