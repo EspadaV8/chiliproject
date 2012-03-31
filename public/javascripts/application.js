@@ -407,12 +407,9 @@ Ajax.Responders.register({
 });
 
 function hideOnLoad() {
-  $$('.hol').each(function(el) {
-  	el.hide();
-	});
+    jQuery('.hol').hide();
 }
-
-Event.observe(window, 'load', hideOnLoad);
+jQuery(window).on('load', hideOnLoad);
 
 // a few constants for animations speeds, etc.
 var animationRate = 100;
