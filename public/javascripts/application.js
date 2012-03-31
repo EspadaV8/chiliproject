@@ -154,14 +154,12 @@ function promptToRemote(text, param, url) {
 }
 
 function collapseScmEntry(id) {
-    var els = document.getElementsByClassName(id, 'browser');
-	for (var i = 0; i < els.length; i++) {
-	   if (els[i].hasClassName('open')) {
-	       collapseScmEntry(els[i].id);
-	   }
-       Element.hide(els[i]);
-    }
-    $(id).removeClassName('open');
+    var els = jQuery('.' + id);
+    els.filter('.open').each(function() {
+        collapseScmEntry(jQuery(this).attr('id'));
+    });
+    els.hide();
+    jQuery('#' + id).removeClass('open');
 }
 
 function expandScmEntry(id) {
