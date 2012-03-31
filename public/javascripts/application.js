@@ -163,14 +163,12 @@ function collapseScmEntry(id) {
 }
 
 function expandScmEntry(id) {
-    var els = document.getElementsByClassName(id, 'browser');
-	for (var i = 0; i < els.length; i++) {
-       Element.show(els[i]);
-       if (els[i].hasClassName('loaded') && !els[i].hasClassName('collapsed')) {
-            expandScmEntry(els[i].id);
-       }
-    }
-    $(id).addClassName('open');
+    var els = jQuery('.' + id);
+    els.filter('.loaded:not(.collapsed)').each(function() {
+        expandScmEntry(jQuery(this).attr('id'));
+    });
+    els.show();
+    jQuery('#' + id).addClass('open');
 }
 
 function scmEntryClick(id) {
