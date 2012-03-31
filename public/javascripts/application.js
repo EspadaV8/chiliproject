@@ -315,8 +315,7 @@ function observeRelatedIssueField(url) {
 }
 
 function setVisible(id, visible) {
-  var el = $(id);
-  if (el) {if (visible) {el.show();} else {el.hide();}}
+    jQuery('#' + id).toggle(visible);
 }
 
 function observeProjectModules() {
