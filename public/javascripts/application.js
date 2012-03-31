@@ -269,12 +269,11 @@ function generateProjectIdentifier() {
 }
 
 function observeProjectName() {
-  var f = function() {
-    if(!projectIdentifierLocked) {
-      $('project_identifier').setValue(generateProjectIdentifier());
-    }
-  };
-  Event.observe('project_name', 'keyup', f);
+    jQuery('#project_name').on('keyup', function() {
+        if(!projectIdentifierLocked) {
+            jQuery('#project_identifier').val(generateProjectIdentifier());
+        }
+    });
 }
 
 function observeProjectIdentifier() {
