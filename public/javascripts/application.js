@@ -98,22 +98,16 @@ function showTab(name) {
 }
 
 function moveTabRight(el) {
-	var lis = Element.up(el, 'div.tabs').down('ul').childElements();
-	var tabsWidth = 0;
-	var i;
-	for (i=0; i<lis.length; i++) {
-		if (lis[i].visible()) {
-			tabsWidth += lis[i].getWidth() + 6;
-		}
-	}
-	if (tabsWidth < Element.up(el, 'div.tabs').getWidth() - 60) {
-		return;
-	}
-	i=0;
-	while (i<lis.length && !lis[i].visible()) {
-		i++;
-	}
-	lis[i].hide();
+    var tabs = jQuery(el).parents('div.tabs');
+    var lis = tabs.find('li');
+    var tabsWidth = 0;
+    lis.filter(':visible').each(function() {
+        tabsWidth += jQuery(this).width() + 6;
+    });
+    if (tabsWidth < tabs.width() - 60) {
+        return;
+    }
+    lis.filter(':visible:first').hide();
 }
 
 function moveTabLeft(el) {
