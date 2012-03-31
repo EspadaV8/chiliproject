@@ -190,9 +190,9 @@ function scmEntryClick(id) {
 }
 
 function scmEntryLoaded(id) {
-    Element.addClassName(id, 'open');
-    Element.addClassName(id, 'loaded');
-    Element.removeClassName(id, 'loading');
+    jQuery('#' + id).addClass('open')
+        .addClass('loaded')
+        .removeClass('loading');
 }
 
 function randomKey(size) {
