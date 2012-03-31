@@ -90,17 +90,11 @@ function addFileField() {
 }
 
 function showTab(name) {
-    var f = $$('div#content .tab-content');
-	for(var i=0; i<f.length; i++){
-		Element.hide(f[i]);
-	}
-    var f = $$('div.tabs a');
-	for(var i=0; i<f.length; i++){
-		Element.removeClassName(f[i], "selected");
-	}
-	Element.show('tab-content-' + name);
-	Element.addClassName('tab-' + name, "selected");
-	return false;
+    jQuery('#content .tab-content').hide();
+    jQuery('div.tabs a').removeClass('selected');
+    jQuery('#tab-content-' + name).show();
+    jQuery('#tab-' + name).addClass('selected');
+    return false;
 }
 
 function moveTabRight(el) {
