@@ -132,11 +132,11 @@ function displayTabsButtons() {
 }
 
 function setPredecessorFieldsVisibility() {
-    relationType = $('relation_relation_type');
-    if (relationType && (relationType.value == "precedes" || relationType.value == "follows")) {
-        Element.show('predecessor_fields');
+    var selectedOption = jQuery('#relation_relation_type option:selected').val();
+    if (selectedOption == "precedes" || selectedOption == "follows") {
+        jQuery('#predecessor_fields').show();
     } else {
-        Element.hide('predecessor_fields');
+        jQuery('#predecessor_fields').hide();
     }
 }
 
