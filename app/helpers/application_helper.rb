@@ -48,7 +48,7 @@ module ApplicationHelper
     if user.is_a?(User)
       name = h(user.name(options[:format]))
       if user.active?
-        link_to name, :controller => 'users', :action => 'show', :id => user
+        link_to 'Profile', {:controller => 'users', :action => 'show', :id => user}, :class => "dropdown-toggle", :'data-toggle' => 'dropdown'
       else
         name
       end

@@ -1,106 +1,114 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title><%= html_title %></title>
-<meta name="description" content="<%= Redmine::Info.app_name %>" />
-<meta name="keywords" content="issue,bug,tracker" />
-<%= csrf_meta_tag %>
-<%= favicon %>
-<%= stylesheet_link_tag 'reset', :media => 'all' %>
-<%= stylesheet_link_tag 'smoothness/jquery-ui', :media => 'all' %>
-<%= stylesheet_link_tag 'application', :media => 'all' %>
-<%= stylesheet_link_tag 'print', :media => 'print' %>
-<%= stylesheet_link_tag 'rtl', :media => 'all' if l(:direction) == 'rtl' %>
-<!--[if lte IE 6]><%= stylesheet_link_tag 'ie6', :media => 'all' %><![endif]-->
-<!--[if lte IE 7]><%= stylesheet_link_tag 'ie7', :media => 'all' %><![endif]-->
-<!--[if gte IE 8]><![endif]-->
+  <meta charset="utf-8">
 
-<%= javascript_include_tag 'jquery.min.js' %>
-<%= javascript_include_tag 'jquery-ui.min.js' %>
-<%= javascript_include_tag 'jquery.menu_expand.js' %>
-<%= javascript_tag('jQuery.noConflict();') %>
-<%= javascript_heads %>
-<%= stylesheet_link_tag 'jstoolbar' %>
-<%= heads_for_theme %>
-<% heads_for_wiki_formatter %>
-<%= call_hook :view_layouts_base_html_head %>
-<!-- page specific tags -->
-<%= yield :header_tags -%>
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title><%= html_title %></title>
+
+  <meta name="description" content="<%= Redmine::Info.app_name %>" />
+  <meta name="keywords" content="issue,bug,tracker" />
+  <%= csrf_meta_tag %>
+  <%= favicon %>
+  <%= stylesheet_link_tag 'bootstrap', :media => 'all' %>
+  <%= stylesheet_link_tag 'bootstrap-respoisive', :media => 'all' %>
+
+  <%= heads_for_theme %>
+  <% heads_for_wiki_formatter %>
+  <%= call_hook :view_layouts_base_html_head %>
+  <!-- page specific tags -->
+  <%= javascript_include_tag 'modernizr-2.5.3.min.js' %>
 </head>
 <body class="<%=h body_css_classes %>">
-<div id="wrapper">
-  <div id="top-menu">
-    <div id="header">
-      <div id="logo"><%= link_to(h(Setting.app_title), home_path) %></div>
-      <div id="top-menu-items">
-      <div id="search">
-        <%= render :partial => 'search/quick_search', :locals => {:search_term => @question} %>
-      </div>
-
-      <% if User.current.logged? || !Setting.login_required? %>
-      <ul id="account-nav">
-        <% main_top_menu_items.each do |item| %>
-            <%= render_menu_node(item) %>
-        <% end %>
-        <li class="drop-down">
-          <%= link_to l(:label_project_plural), { :controller => 'projects', :action => 'index' }, :class => "projects" %>
-          <ul style="display:none;">
-            <li><%= link_to l(:label_project_all), { :controller => 'projects', :action => 'index' }, :class => "projects separator" %></li>
-            <%
-            project_content = ''
-            project_tree(User.current.projects.all) do |project, level|
-              name_prefix = (level > 0 ? ('&nbsp;' * 2 * level + '&#187; ') : '')
-              project_content << content_tag(:li,
-                                     link_to(name_prefix + h(project), {:controller => 'projects', :action => 'show', :id => project, :jump => current_menu_item}))
-            end
-            %>
-            <%= project_content %>
-          </ul>
-        </li>
-        <% if more_top_menu_items.present? || User.current.admin? %>
-        <li class="drop-down" id="more-menu">
-          <a class="more" href="#"><%= l(:label_more) %></a>
-          <ul style="display:none;">
-            <% more_top_menu_items.each do |item| %>
-            <%= render_menu_node(item) %>
-            <% end %>
-            <%# TODO: Extract to helper %>
-            <% if User.current.admin? %>
-              <% menu_items_for(:admin_menu) do |item| -%>
-                <li><%= link_to h(item.caption), item.url, item.html_options %></li>
-              <% end -%>
-            <% end %>
-          </ul>
-        </li>
-        <% end %>
-          <%= render_menu_node(help_menu_item) %>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <%= link_to h(Setting.app_title), home_path, :class => "brand" %>
+        <ul class="nav pull-right">
           <% unless User.current.logged? %>
             <% if Setting.self_registration? %>
-            <li>
+              <li>
               <%= link_to l(:label_register), { :controller => 'account', :action => 'register' } %>
-            </li>
+              </li>
             <% end %>
-            <li id="login-menu" class="drop-down last-child">
-              <%= link_to l(:label_login), {:controller => 'account', :action => 'login'}, :class => 'login' %>
-              <div id="nav-login" style="display:none;">
-                <%= render :partial => 'account/login' %>
-              </div>
+            <li class="dropdown">
+            <%= link_to l(:label_login), { :controller => 'account', :action => 'login' }, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown' %>
+            <ul class="dropdown-menu">
+              <%= render :partial => 'account/login' %>
+            </ul>
             </li>
           <% else %>
-            <li class="drop-down last-child">
-            <%= link_to_user(User.current) %>
-            <ul style="display:none;">
-            <% menu_items_for(:account_menu) do |item| %>
-              <%= render_menu_node(item) %>
-            <% end %>
+            <li class="dropdown">
+            <%= link_to h(User.current.name), '#', :class => 'data-toggle', :'data-toggle' => 'dropdown' %>
+            <ul class="dropdown-menu">
+              <li><%= link_to_user(User.current) %></li>
+              <% menu_items_for(:account_menu) do |item| %>
+                <%= render_menu_node(item) %>
+              <% end %>
             </ul>
             </li>
           <% end %>
-      </ul>
-      <% end %>
+        </ul>
+        <%= render :partial => 'search/quick_search', :locals => {:search_term => @question}, :id => 'search' %>
+
+        <% if User.current.logged? || !Setting.login_required? %>
+          <ul class="nav">
+            <% main_top_menu_items.each do |item| %>
+              <%= render_menu_node(item) %>
+            <% end %>
+            <li class="dropdown">
+            <%= link_to l(:label_project_plural), { :controller => 'projects', :action => 'index' }, :'data-target' => '#', :class => "dropdown-toggle", :'data-toggle' => 'dropdown' %>
+            <ul class="dropdown-menu">
+              <li><%= link_to l(:label_project_all), { :controller => 'projects', :action => 'index' } %></li>
+              <%
+                project_content = ''
+                project_tree(User.current.projects.all) do |project, level|
+                  name_prefix = (level > 0 ? ('&nbsp;' * 2 * level + '&#187; ') : '')
+                    project_content << content_tag(:li,
+                                                   link_to(name_prefix + h(project), {:controller => 'projects', :action => 'show', :id => project, :jump => current_menu_item}))
+                end
+
+                if project_content != ''
+              %>
+              <li class="divider"></li>
+              <%= project_content %>
+              <%
+                end
+              %>
+            </ul>
+            </li>
+            <% if more_top_menu_items.present? || User.current.admin? %>
+              <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= l(:label_more) %></a>
+              <ul class="dropdown-menu">
+                <% more_top_menu_items.each do |item| %>
+                  <%= render_menu_node(item) %>
+                <% end %>
+                <%# TODO: Extract to helper %>
+                <% if User.current.admin? %>
+                  <% menu_items_for(:admin_menu) do |item| -%>
+                    <li><%= link_to h(item.caption), item.url, item.html_options %></li>
+                  <% end -%>
+                <% end %>
+              </ul>
+              </li>
+            <% end %>
+            <%= render_menu_node(help_menu_item) %>
+          </ul>
+        <% end %>
+      </div>
     </div>
-    </div>
+  </div>
+
+<div id="wrapper">
+  <div id="top-menu">
     <div id="breadcrumb">
       <%= page_header_title %>
     </div>
@@ -150,5 +158,8 @@
 
 </div>
 <%= call_hook :view_layouts_base_body_bottom %>
+  <%= javascript_include_tag 'jquery.min.js' %>
+  <%= javascript_include_tag 'jquery-ui.min.js' %>
+  <%= javascript_include_tag 'bootstrap.js' %>
 </body>
 </html>
