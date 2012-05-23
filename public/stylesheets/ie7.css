@@ -54,3 +54,8 @@ div.attachments {
 fieldset.collapsible.header_collapsible legend {
   margin-left: -15px;
 }
+
+.issue hr {
+  width: 100% !important;
+  color: #ccc;
+}
