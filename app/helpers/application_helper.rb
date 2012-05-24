@@ -394,25 +394,20 @@ module ApplicationHelper
   end
 
   def page_header_title
+    b = []
     if @page_header_title.present?
-      h(@page_header_title)
+      b << h(@page_header_title)
     elsif @project.nil? || @project.new_record?
-      h(Setting.app_title)
+      b << h(Setting.app_title)
     else
-      b = []
       ancestors = (@project.root? ? [] : @project.ancestors.visible)
       if ancestors.any?
         root = ancestors.shift
-        b << link_to_project(root, {:jump => current_menu_item}, :class => 'root')
-        if ancestors.size > 2
-          b << '&#8230;'
-          ancestors = ancestors[-2, 2]
-        end
-        b += ancestors.collect {|p| link_to_project(p, {:jump => current_menu_item}, :class => 'ancestor') }
+        b << root
       end
-      b << h(@project)
-      b.join(' &#187; ')
+      b << @project
     end
+    b
   end
 
   def html_title(*args)
