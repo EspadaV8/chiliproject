@@ -18,7 +18,7 @@
   <%= csrf_meta_tag %>
   <%= favicon %>
   <%= stylesheet_link_tag 'bootstrap', :media => 'all' %>
-  <%= stylesheet_link_tag 'bootstrap-respoisive', :media => 'all' %>
+  <%= stylesheet_link_tag 'bootstrap-responsive', :media => 'all' %>
 
   <%= heads_for_theme %>
   <% heads_for_wiki_formatter %>
@@ -39,14 +39,18 @@
               </li>
             <% end %>
             <li class="dropdown">
-            <%= link_to l(:label_login), { :controller => 'account', :action => 'login' }, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown' %>
+            <% link_to({ :controller => 'account', :action => 'login' }, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
+                <%= l(:label_login) %> <b class="caret"></b>
+            <% end %>
             <ul class="dropdown-menu">
               <%= render :partial => 'account/login' %>
             </ul>
             </li>
           <% else %>
             <li class="dropdown">
-            <%= link_to h(User.current.name), '#', :class => 'data-toggle', :'data-toggle' => 'dropdown' %>
+            <% link_to({:controller => 'users', :action => 'show', :id => User.current}, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
+                <%= h(User.current.name) %> <b class="caret"></b>
+            <% end %>
             <ul class="dropdown-menu">
               <li><%= link_to_user(User.current) %></li>
               <% menu_items_for(:account_menu) do |item| %>
@@ -64,40 +68,40 @@
               <%= render_menu_node(item) %>
             <% end %>
             <li class="dropdown">
-            <%= link_to l(:label_project_plural), { :controller => 'projects', :action => 'index' }, :'data-target' => '#', :class => "dropdown-toggle", :'data-toggle' => 'dropdown' %>
-            <ul class="dropdown-menu">
-              <li><%= link_to l(:label_project_all), { :controller => 'projects', :action => 'index' } %></li>
-              <%
-                project_content = ''
-                project_tree(User.current.projects.all) do |project, level|
-                  name_prefix = (level > 0 ? ('&nbsp;' * 2 * level + '&#187; ') : '')
-                    project_content << content_tag(:li,
-                                                   link_to(name_prefix + h(project), {:controller => 'projects', :action => 'show', :id => project, :jump => current_menu_item}))
-                end
+                <% link_to({ :controller => 'projects', :action => 'index' }, :'data-target' => '#', :class => "dropdown-toggle", :'data-toggle' => 'dropdown') do %>
+                    <%= l(:label_project_plural) %> <b class="caret"></b>
+                <% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to l(:label_project_all), { :controller => 'projects', :action => 'index' } %></li>
+                  <%
+                    project_content = ''
+                    project_tree(User.current.projects.all) do |project, level|
+                      name_prefix = (level > 0 ? ('&nbsp;' * 2 * level + '&#187; ') : '')
+                        project_content << content_tag(:li,
+                                                       link_to(name_prefix + h(project), {:controller => 'projects', :action => 'show', :id => project, :jump => current_menu_item}))
+                    end
 
-                if project_content != ''
-              %>
-              <li class="divider"></li>
-              <%= project_content %>
-              <%
-                end
-              %>
-            </ul>
+                    if project_content != ''
+                  %>
+                  <li class="divider"></li>
+                  <%= project_content %>
+                  <% end %>
+                </ul>
             </li>
             <% if more_top_menu_items.present? || User.current.admin? %>
               <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= l(:label_more) %></a>
-              <ul class="dropdown-menu">
-                <% more_top_menu_items.each do |item| %>
-                  <%= render_menu_node(item) %>
-                <% end %>
-                <%# TODO: Extract to helper %>
-                <% if User.current.admin? %>
-                  <% menu_items_for(:admin_menu) do |item| -%>
-                    <li><%= link_to h(item.caption), item.url, item.html_options %></li>
-                  <% end -%>
-                <% end %>
-              </ul>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= l(:label_more) %> <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <% more_top_menu_items.each do |item| %>
+                      <%= render_menu_node(item) %>
+                    <% end %>
+                    <%# TODO: Extract to helper %>
+                    <% if User.current.admin? %>
+                      <% menu_items_for(:admin_menu) do |item| -%>
+                        <li><%= link_to h(item.caption), item.url, item.html_options %></li>
+                      <% end -%>
+                    <% end %>
+                  </ul>
               </li>
             <% end %>
             <%= render_menu_node(help_menu_item) %>
@@ -107,34 +111,47 @@
     </div>
   </div>
 
-<div id="wrapper">
-  <div id="top-menu">
-    <div id="breadcrumb">
-      <%= page_header_title %>
+  <div class="container">
+    <div class="row">
+      <ul class="breadcrumb">
+        <%# This works because page_header_title is either a single item (a heading) or a list of projects %>
+        <% page_header_title.each_with_index do |item, idx| %>
+          <% if idx != page_header_title.length - 1 %>
+            <li>
+              <%= link_to_project(item) %>
+              <span class="divider">/</span>
+            </li>
+          <% else %>
+            <li class="active"><%= item %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="row">
+      <% main_menu = render_main_menu(@project) %>
+      <% side_displayed = has_content?(:sidebar) || has_content?(:main_menu) || !main_menu.blank? %>
+      <% if side_displayed %>
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <%= main_menu %>
+            <%= yield :main_menu %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <% main_menu = render_main_menu(@project) %>
-  <% if (side_displayed = has_content?(:sidebar) || has_content?(:main_menu) || !main_menu.blank?) %>
-  <% display_sidebar = true %>
-  <% else %>
-  <% display_sidebar = false %>
-  <% end %>
+<div id="wrapper">
   <div id="main" class="<%= side_displayed ? '' : "nosidebar" %>">
     <% if (side_displayed) %>
       <div id="side-container">
-        <div id="main-menu">
-          <%= main_menu %>
-          <%= yield :main_menu %>
-        </div>
 
-      <% if display_sidebar %>
-        <!-- Sidebar -->
+        <% if has_content?(:sidebar) %>
         <div id="sidebar">
           <%= yield :sidebar %>
           <%= call_hook :view_layouts_base_sidebar %>
         </div>
-      <% end %>
+        <% end %>
       </div>
 
       <%= expand_current_menu %>
