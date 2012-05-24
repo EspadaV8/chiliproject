@@ -58,7 +58,7 @@ module ProjectsHelper
         # set the project environment to please macros.
         @project = project
         if (ancestors.empty? || project.is_descendant_of?(ancestors.last))
-          s << "<ul class='projects #{ ancestors.empty? ? 'root' : nil}'>\n"
+          s << "<ul>\n"
         else
           ancestors.pop
           s << "</li>"
@@ -67,11 +67,10 @@ module ProjectsHelper
             s << "</ul></li>\n"
           end
         end
-        classes = (ancestors.empty? ? 'root' : 'child')
-        s << "<li class='#{classes}'><div class='#{classes}'>" +
-               link_to_project(project, {}, :class => "project #{User.current.member_of?(project) ? 'my-project' : nil}")
+        s << "<li>"
+        s << '<i class="icon icon-star"></i> ' if User.current.member_of?(project)
+        s << link_to_project(project, {})
         s << "<div class='wiki description'>#{textilizable(project.short_description, :project => project)}</div>" unless project.description.blank?
-        s << "</div>\n"
         ancestors << project
       end
       s << ("</li></ul>\n" * ancestors.size)

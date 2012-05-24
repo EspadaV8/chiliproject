@@ -39,9 +39,8 @@
     <%= call_hook(:view_projects_show_contextual) %>
 </ul>
 
-<h2><%=l(:label_project_plural)%></h2>
-
-<div class="wiki">
+<div class="page-header">
+  <h1><%=l(:label_project_plural)%></h1>
   <%= textilizable Setting.welcome_text %>
 </div>
 
@@ -50,8 +49,8 @@
 <%= render_project_hierarchy(@projects)%>
 
 <% if User.current.logged? %>
-<p style="text-align:right;">
-<span class="my-project"><%= l(:label_my_projects) %></span>
+<p>
+    <i class="icon icon-star"></i> <%= l(:label_my_projects) %>
 </p>
 <% end %>
 
