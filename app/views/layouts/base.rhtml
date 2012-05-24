@@ -15,6 +15,7 @@
 
   <meta name="description" content="<%= Redmine::Info.app_name %>" />
   <meta name="keywords" content="issue,bug,tracker" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= csrf_meta_tag %>
   <%= favicon %>
   <%= stylesheet_link_tag 'bootstrap', :media => 'all' %>
@@ -29,7 +30,7 @@
 <body class="<%=h body_css_classes %>">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="container">
+      <div class="container-fluid">
         <%= link_to h(Setting.app_title), home_path, :class => "brand" %>
         <ul class="nav pull-right">
           <% unless User.current.logged? %>
@@ -39,24 +40,24 @@
               </li>
             <% end %>
             <li class="dropdown">
-            <% link_to({ :controller => 'account', :action => 'login' }, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
-                <%= l(:label_login) %> <b class="caret"></b>
-            <% end %>
-            <ul class="dropdown-menu">
-              <%= render :partial => 'account/login' %>
-            </ul>
+              <% link_to({ :controller => 'account', :action => 'login' }, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
+                  <%= l(:label_login) %> <b class="caret"></b>
+              <% end %>
+              <ul class="dropdown-menu">
+                <%= render :partial => 'account/login' %>
+              </ul>
             </li>
           <% else %>
             <li class="dropdown">
-            <% link_to({:controller => 'users', :action => 'show', :id => User.current}, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
+              <% link_to({:controller => 'users', :action => 'show', :id => User.current}, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
                 <%= h(User.current.name) %> <b class="caret"></b>
-            <% end %>
-            <ul class="dropdown-menu">
-              <li><%= link_to_user(User.current) %></li>
-              <% menu_items_for(:account_menu) do |item| %>
-                <%= render_menu_node(item) %>
               <% end %>
-            </ul>
+              <ul class="dropdown-menu">
+                <li><%= link_to_user(User.current) %></li>
+                <% menu_items_for(:account_menu) do |item| %>
+                  <%= render_menu_node(item) %>
+                <% end %>
+              </ul>
             </li>
           <% end %>
         </ul>
@@ -81,8 +82,7 @@
                                                        link_to(name_prefix + h(project), {:controller => 'projects', :action => 'show', :id => project, :jump => current_menu_item}))
                     end
 
-                    if project_content != ''
-                  %>
+                    if project_content != '' %>
                   <li class="divider"></li>
                   <%= project_content %>
                   <% end %>
@@ -111,8 +111,8 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="row">
+  <div class="container-fluid">
+    <div class="row-fluid">
       <ul class="breadcrumb">
         <%# This works because page_header_title is either a single item (a heading) or a list of projects %>
         <% page_header_title.each_with_index do |item, idx| %>
@@ -127,54 +127,44 @@
         <% end %>
       </ul>
     </div>
-    <div class="row">
+    <div class="row-fluid">
       <% main_menu = render_main_menu(@project) %>
-      <% side_displayed = has_content?(:sidebar) || has_content?(:main_menu) || !main_menu.blank? %>
-      <% if side_displayed %>
+      <% side_displayed = has_content?(:sidebar) %>
+      <% display_sidebar = (side_displayed || has_content?(:main_menu) || !main_menu.blank?)  %>
+      <% if display_sidebar %>
         <div class="span3">
           <div class="well sidebar-nav">
             <%= main_menu %>
             <%= yield :main_menu %>
           </div>
+          <% if side_displayed %>
+          <div id="sidebar">
+            <%= yield :sidebar %>
+            <%= call_hook :view_layouts_base_sidebar %>
+          </div>
+          <% end %>
         </div>
       <% end %>
+      <div class="span<%= display_sidebar ? '9' : '12' %>">
+        <%= render_flash_messages %>
+        <%= yield %>
+        <%= call_hook :view_layouts_base_content %>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="footer">
+          <%= l(:text_powered_by, :link => link_to(Redmine::Info.app_name, Redmine::Info.url)) %>
+        </div>
+      </div>
     </div>
   </div>
 
 <div id="wrapper">
-  <div id="main" class="<%= side_displayed ? '' : "nosidebar" %>">
-    <% if (side_displayed) %>
-      <div id="side-container">
-
-        <% if has_content?(:sidebar) %>
-        <div id="sidebar">
-          <%= yield :sidebar %>
-          <%= call_hook :view_layouts_base_sidebar %>
-        </div>
-        <% end %>
-      </div>
-
-      <%= expand_current_menu %>
-    <% end %>
-    <div class="<%= side_displayed ? '' : "nosidebar" %>" id="content">
-      <%= render_flash_messages %>
-      <%= yield %>
-      <%= call_hook :view_layouts_base_content %>
-      <div style="clear:both;">&nbsp;</div>
-    </div>
-  </div>
-
-  <div id="footer">
-    <div class="bgl"><div class="bgr">
-        <%= l(:text_powered_by, :link => link_to(Redmine::Info.app_name, Redmine::Info.url)) %>
-      </div></div>
-  </div>
-
   <div id="ajax-indicator" style="display:none;"><span><%= l(:label_loading) %></span></div>
   <div id="dialog-window" style="display:none;"></div>
-
 </div>
-<%= call_hook :view_layouts_base_body_bottom %>
+  <%= call_hook :view_layouts_base_body_bottom %>
   <%= javascript_include_tag 'jquery.min.js' %>
   <%= javascript_include_tag 'jquery-ui.min.js' %>
   <%= javascript_include_tag 'bootstrap.js' %>
