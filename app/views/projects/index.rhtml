@@ -45,8 +45,7 @@
 </div>
 
 <%= call_hook(:view_projects_show_top) %>
-
-<%= render_project_hierarchy(@projects)%>
+<%= render :partial => "list", :locals => { :projects => @projects } %>
 
 <% if User.current.logged? %>
 <p>

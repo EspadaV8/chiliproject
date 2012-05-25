@@ -1,0 +1,19 @@
+<% if projects.any? %>
+  <ul>
+    <% projects.each do |p| %>
+      <% if (!defined?(parent) && p.root?) || (defined?(parent) && (p.parent == parent)) %>
+        <li>
+        <% if User.current.member_of?(p) %>
+          <i class="icon icon-star"></i>
+        <% else %>
+          <i class="icon icon-star-empty"></i>
+        <% end %>
+        <%= link_to_project(p, {}) %>
+        <% if p.descendants.any? %>
+          <%= render :partial => 'list', :locals => { :projects => p.descendants, :parent => p } %>
+        <% end %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
