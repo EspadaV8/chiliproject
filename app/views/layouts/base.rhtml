@@ -52,7 +52,7 @@
               <% link_to({:controller => 'users', :action => 'show', :id => User.current}, :'data-target' => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown') do %>
                 <%= h(User.current.name) %> <b class="caret"></b>
               <% end %>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-form">
                 <li><%= link_to_user(User.current) %></li>
                 <% menu_items_for(:account_menu) do |item| %>
                   <%= render_menu_node(item) %>

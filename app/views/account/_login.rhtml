@@ -1,35 +1,43 @@
-<div id="nav-login-content">
-  <% form_tag({:controller => "account", :action=> "login"}) do %>
-    <%= hidden_field_tag 'back_url', CGI.escape(request.url), :id => nil  %>
-    <table>
-      <tr>
-        <td><label for="username-pulldown"><%= l(:field_login) %></label></td>
-        <td><label for="password-pulldown"><%= l(:field_password) %></label></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><%= text_field_tag 'username', nil, :tabindex => '1', :id => 'username-pulldown' %></td>
-        <td><%= password_field_tag 'password', nil, :tabindex => '1', :id => 'password-pulldown' %></td>
-        <td><input type="submit" name="login" value="<%=l(:button_login)%>" tabindex="1"/></td>
-      </tr>
-    </table>
-    <div id = "optional_login_fields" style = "top = 10px; white-space:nowrap">
-      <% if Setting.openid? %>
-        <%= text_field_tag "openid_url", nil, :placeholder => l(:field_identity_url), :tabindex => '1' %>
-      <% end %>
-
-      <% if Setting.autologin? %>
-        <label for="autologin"><%= check_box_tag 'autologin', 1, false, :tabindex => 1 %> <%= l(:label_stay_logged_in) %></label>
-      <% end %>
-
-      <% if Setting.lost_password? %>
-        <%= link_to l(:label_password_lost), {:controller => 'account', :action => 'lost_password'}, :tabindex => 1 %>
-      <% end %>
-
-      <% if !User.current.logged? && Setting.self_registration? %>
-        <%= "|" if Setting.lost_password? %>
-         <%= link_to l(:label_register), { :controller => 'account', :action => 'register' }, :tabindex => 1 %>
-      <% end %>
+<% form_tag({:controller => "account", :action=> "login"}, :class => 'form-horizontal') do %>
+  <%= hidden_field_tag 'back_url', CGI.escape(request.url), :id => nil  %>
+  <div class="control-group">
+    <label class="control-label" for="username-pulldown"><%= l(:field_login) %></label>
+    <div class="controls">
+      <%= text_field_tag 'username', nil, :tabindex => 1, :id => 'username-pulldown' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="password-pulldown"><%= l(:field_password) %></label>
+    <div class="controls">
+      <%= password_field_tag 'password', nil, :tabindex => 1, :id => 'password-pulldown' %>
+    </div>
+  </div>
+  <% if Setting.openid? %>
+    <div class="control-group">
+      <label class="control-label" for="openid_url"><%= l(:field_identity_url) %></label>
+      <div class="controls">
+        <%= text_field_tag "openid_url", nil, :tabindex => 1 %>
+      </div>
     </div>
   <% end %>
-</div>
+  <% if Setting.autologin? %>
+    <div class="control-group">
+      <label class="control-label" for="autologin"><%= l(:label_stay_logged_in) %></label>
+      <div class="controls">
+        <%= check_box_tag 'autologin', 1, false, :tabindex => 1 %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary"><%= l(:button_login) %></button>
+  </div>
+  <p>
+    <% if Setting.lost_password? %>
+      <%= link_to l(:label_password_lost), {:controller => 'account', :action => 'lost_password'}, :tabindex => 1 %>
+    <% end %>
+
+    <% if !User.current.logged? && Setting.self_registration? %>
+      <%= link_to l(:label_register), { :controller => 'account', :action => 'register' }, :tabindex => 1 %>
+    <% end %>
+  </p>
+<% end %>
