@@ -19,9 +19,9 @@
 </div>
 <% end %>
 
+<% if !@project.homepage.blank? || @subprojects.any? || @project.visible_custom_field_values.any? %>
 <div class="row-fluid">
   <div class="span12">
-    <% if !@project.homepage.blank? || @subprojects.any? || @project.visible_custom_field_values.any? %>
     <ul class="project-links">
       <% if !@project.homepage.blank? %>
         <li class="homepage">
@@ -51,12 +51,17 @@
            <li><%= h(custom_value.custom_field.name) %>: <%=h show_value(custom_value) %></li>
         <% end %>
       <% end %>
-    <% end %>
   </div>
 </div>
+<% end %>
+
+<% user_can_view_issues = User.current.allowed_to?(:view_issues, @project) %>
+<% project_has_users = @users_by_role.any? %>
+
+<% if user_can_view_issues || project_has_users %>
 <div class="row-fluid">
+  <% if user_can_view_issues %>
   <div class="span6">
-    <% if User.current.allowed_to?(:view_issues, @project) %>
     <div class="issues well">
       <h3><%=l(:label_issue_tracking)%></h3>
       <ul class="trackers">
@@ -85,51 +90,63 @@
         <% end %>
       </ul>
     </div>
-    <% end %>
-    <%= call_hook(:view_projects_show_left, :project => @project) %>
   </div>
+  <% end %>
+  <%= call_hook(:view_projects_show_left, :project => @project) %>
 
+  <% if project_has_users %>
   <div class="span6">
-    <%= render :partial => 'members_box' %>
+    <div class="members well">
+      <h3><%=l(:label_member_plural)%></h3>
+      <p><% @users_by_role.keys.sort.each do |role| %>
+      <%=h role %>: <%= @users_by_role[role].sort.collect{|u| link_to_user u}.join(", ") %><br />
+      <% end %></p>
+    </div>
+  </div>
+	<% end %>
+</div>
+<% end %>
 
-    <% if @news.any? && authorize_for('news', 'index') %>
+<% if @news.any? && authorize_for('news', 'index') %>
+<div class="row-fluid">
+  <div class="span12">
     <div class="news well">
       <h3><%=l(:label_news_latest)%></h3>
       <%= render :partial => 'news/news', :collection => @news %>
       <p><%= link_to l(:label_news_view_all), :controller => 'news', :action => 'index', :project_id => @project %></p>
     </div>
-    <% end %>
-    <%= call_hook(:view_projects_show_right, :project => @project) %>
   </div>
-
-  <% content_for :sidebar do %>
-      <% if @total_hours.present? %>
-      <div class="spent-time">
-        <h3><%= l(:label_spent_time) %></h3>
-        <p>
-          <i class="icon icon-time"></i> <span><%= l_hours(@total_hours) %></span>
-        </p>
-        <ul>
-          <li>
-            <%= link_to(l(:label_details), {:controller => 'timelog', :action => 'index', :project_id => @project}) %>
-          </li>
-          <li>
-            <%= link_to(l(:label_report), {:controller => 'time_entry_reports', :action => 'report', :project_id => @project}) %>
-          </li>
-          <% if authorize_for('timelog', 'new') %>
-            <li>
-              <%= link_to l(:button_log_time), {:controller => 'timelog', :action => 'new', :project_id => @project} %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-      <% end %>
-      <%= call_hook(:view_projects_show_sidebar_bottom, :project => @project) %>
-  <% end %>
-
-  <% content_for :header_tags do %>
-  <%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :id => @project, :format => 'atom', :key => User.current.rss_key}) %>
-  <% end %>
 </div>
+<% end %>
+<%= call_hook(:view_projects_show_right, :project => @project) %>
+
+<% content_for :sidebar do %>
+  <% if @total_hours.present? %>
+  <div class="spent-time">
+    <h3><%= l(:label_spent_time) %></h3>
+    <p>
+      <i class="icon icon-time"></i> <span><%= l_hours(@total_hours) %></span>
+    </p>
+    <ul>
+      <li>
+        <%= link_to(l(:label_details), {:controller => 'timelog', :action => 'index', :project_id => @project}) %>
+      </li>
+      <li>
+        <%= link_to(l(:label_report), {:controller => 'time_entry_reports', :action => 'report', :project_id => @project}) %>
+      </li>
+      <% if authorize_for('timelog', 'new') %>
+        <li>
+          <%= link_to l(:button_log_time), {:controller => 'timelog', :action => 'new', :project_id => @project} %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <%= call_hook(:view_projects_show_sidebar_bottom, :project => @project) %>
+<% end %>
+
+<% content_for :header_tags do %>
+  <%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :id => @project, :format => 'atom', :key => User.current.rss_key}) %>
+<% end %>
 
 <% html_title(l(:label_overview)) -%>
