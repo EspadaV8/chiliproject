@@ -4,38 +4,33 @@
 
 <ul class="contextual">
     <% if User.current.allowed_to?(:add_project, nil, :global => true) %>
-        <li>
-        <% link_to({:controller => 'projects', :action => 'new'})  do %>
-            <i class="icon icon-plus"></i> <%= l(:label_project_new) %>
-        <% end %>
-        </li>
+      <li>
+        <i class="icon icon-plus"></i>
+        <%= link_to(l(:label_project_new), {:controller => 'projects', :action => 'new'}) %>
+      </li>
     <% end %>
     <% if User.current.allowed_to?(:view_issues, nil, :global => true) %>
-        <li>
-        <% link_to({ :controller => 'issues' }) do %>
-            <i class="icon icon-list"></i> <%= l(:label_issue_view_all) %>
-        <% end %>
-        </li>
+      <li>
+        <i class="icon icon-list"></i>
+        <%= link_to(l(:label_issue_view_all), { :controller => 'issues' }) %>
+      </li>
     <% end %>
     <% if User.current.allowed_to?(:view_time_entries, nil, :global => true) %>
-        <li>
-        <% link_to({ :controller => 'time_entries' }) do %>
-            <i class="icon icon-time"></i> <%= l(:label_overall_spent_time) %>
-        <% end %>
-        </li>
+      <li>
+        <i class="icon icon-time"></i>
+        <%= link_to(l(:label_overall_spent_time), { :controller => 'time_entries' }) %>
+      </li>
     <% end %>
     <% if User.current.allowed_to?(:view_news, nil, :global => true) %>
-        <li>
-        <% link_to({ :controller => 'news' }) do %>
-            <i class="icon icon-globe"></i> <%= l(:label_news_view_all) %>
-        <% end %>
-        </li>
+      <li>
+        <i class="icon icon-globe"></i>
+        <%= link_to(l(:label_news_view_all), { :controller => 'news' }) %>
+      </li>
     <% end %>
-    <li>
-    <% link_to({ :controller => 'activities' }) do %>
-        <i class="icon icon-list-alt"></i> <%= l(:label_overall_activity) %>
-    <% end %>
-    </li>
+      <li>
+        <i class="icon icon-list-alt"></i>
+        <%= link_to(l(:label_overall_activity), { :controller => 'activities' }) %>
+      </li>
     <%= call_hook(:view_projects_show_contextual) %>
 </ul>
 
