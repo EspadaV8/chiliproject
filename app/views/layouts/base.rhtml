@@ -134,7 +134,11 @@
       <% if display_sidebar %>
         <div class="span3">
           <div class="well sidebar-nav">
-            <%= main_menu %>
+              <% if @project %>
+                 <%= render :partial => 'projects/sidebar_menu', :locals => {:project => @project} %>
+              <% else %>
+                <%= main_menu %>
+              <% end %>
             <%= yield :main_menu %>
           </div>
           <% if side_displayed %>

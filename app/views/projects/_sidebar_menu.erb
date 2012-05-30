@@ -1,0 +1,6 @@
+<ul class="nav nav-list">
+  <% menu_items_for(:project_menu, project) do |node| %>
+    <%= render :partial => 'projects/sidebar_menu_child', :locals => {:project => project, :node => node} %>
+    <li class="divider"></li>
+  <% end %>
+</ul>

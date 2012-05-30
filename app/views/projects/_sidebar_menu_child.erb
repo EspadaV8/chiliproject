@@ -1,0 +1,20 @@
+<% caption, url, selected = extract_node_details(node, project) %>
+<% link = link_to(h(caption), url) %>
+<% has_children = node.hasChildren? || !node.child_menus.nil? %>
+<% if has_children %>
+  <li class="nav-header"><%= caption %></li>
+<% end %>
+<li<% if selected %> class="active"<% end %>><%= link %></li>
+<% if has_children %>
+  <% node.children.each do |child| %>
+    <%= render :partial => 'projects/sidebar_menu_child', :locals => {:project => project, :node => child} %>
+  <% end %>
+  <% if node.child_menus %>
+    <% unattached_children = node.child_menus.call(project)
+      if unattached_children.is_a? Array
+        unattached_children.each do |child| %>
+          <li><%= link_to(h(child.caption), child.url) %></li>
+        <% end
+      end %>
+  <% end %>
+<% end %>
