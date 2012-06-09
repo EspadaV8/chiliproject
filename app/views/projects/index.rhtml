@@ -5,30 +5,30 @@
 <ul class="contextual">
     <% if User.current.allowed_to?(:add_project, nil, :global => true) %>
       <li>
-        <i class="icon icon-plus"></i>
+        <i class="icon-plus"></i>
         <%= link_to(l(:label_project_new), {:controller => 'projects', :action => 'new'}) %>
       </li>
     <% end %>
     <% if User.current.allowed_to?(:view_issues, nil, :global => true) %>
       <li>
-        <i class="icon icon-tasks"></i>
+        <i class="icon-tasks"></i>
         <%= link_to(l(:label_issue_view_all), { :controller => 'issues' }) %>
       </li>
     <% end %>
     <% if User.current.allowed_to?(:view_time_entries, nil, :global => true) %>
       <li>
-        <i class="icon icon-time"></i>
+        <i class="icon-time"></i>
         <%= link_to(l(:label_overall_spent_time), { :controller => 'time_entries' }) %>
       </li>
     <% end %>
     <% if User.current.allowed_to?(:view_news, nil, :global => true) %>
       <li>
-        <i class="icon icon-globe"></i>
+        <i class="icon-globe"></i>
         <%= link_to(l(:label_news_view_all), { :controller => 'news' }) %>
       </li>
     <% end %>
       <li>
-        <i class="icon icon-list"></i>
+        <i class="icon-list"></i>
         <%= link_to(l(:label_overall_activity), { :controller => 'activities' }) %>
       </li>
     <%= call_hook(:view_projects_show_contextual) %>
@@ -44,7 +44,7 @@
 
 <% if User.current.logged? %>
 <p>
-    <i class="icon icon-star"></i> <%= l(:label_my_projects) %>
+    <i class="icon-star"></i> <%= l(:label_my_projects) %>
 </p>
 <% end %>
 

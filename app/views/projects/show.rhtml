@@ -1,7 +1,7 @@
 <div class="row-fluid">
   <div class="contextual">
     <% if User.current.allowed_to?(:add_subprojects, @project) %>
-      <i class="icon icon-plus"></i>
+      <i class="icon-plus"></i>
       <%= link_to(l(:label_subproject_new), {:controller => 'projects', :action => 'new', :parent_id => @project})%>
     <% end %>
   </div>
@@ -25,7 +25,7 @@
     <ul class="project-links">
       <% if !@project.homepage.blank? %>
         <li class="homepage">
-          <i class="icon icon-globe"></i>
+          <i class="icon-globe"></i>
           <%=l(:field_homepage)%>: <%= auto_link(h(@project.homepage)) %>
         </li>
       <% end %>
@@ -36,9 +36,9 @@
             <% @subprojects.each do |p| %>
               <li>
               <% if User.current.member_of?(p) %>
-                <i class="icon icon-star"></i>
+                <i class="icon-star"></i>
               <% else %>
-                <i class="icon icon-star-empty"></i>
+                <i class="icon-star-empty"></i>
               <% end %>
               <%= link_to(h(p), :action => 'show', :id => p) %>
               </li>
@@ -125,7 +125,7 @@
   <div class="spent-time">
     <h3><%= l(:label_spent_time) %></h3>
     <p>
-      <i class="icon icon-time"></i> <span><%= l_hours(@total_hours) %></span>
+      <i class="icon-time"></i> <span><%= l_hours(@total_hours) %></span>
     </p>
     <ul>
       <li>
