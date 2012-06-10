@@ -53,26 +53,22 @@
 			</div>
 		</fieldset>
 		</div>
-    <p class="buttons hide-when-print">
-
-    <%= link_to_remote l(:button_apply),
-                       { :url => { :set_filter => 1 },
-                         :before => 'selectAllOptions("selected_columns");',
-                         :update => "content",
-                         :complete => "apply_filters_observer()",
-                         :with => "Form.serialize('query_form')"
-                       }, :class => 'icon icon-checked' %>
-
-    <%= link_to_remote l(:button_clear),
-                       { :url => { :set_filter => 1, :project_id => @project },
-                         :method => :get,
-                         :update => "content",
-                       }, :class => 'icon icon-reload'  %>
-
-    <% if @query.new_record? && User.current.allowed_to?(:save_queries, @project, :global => true) %>
-    <%= link_to l(:button_save), {}, :onclick => "selectAllOptions('selected_columns'); $('query_form').submit(); return false;", :class => 'icon icon-save' %>
-    <% end %>
-    </p>
+    <ul class="actions">
+      <li>
+        <i class="icon-ok"></i>
+        <%= link_to l(:button_apply), '#' %>
+      </li>
+      <li>
+        <i class="icon-remove"></i>
+        <%= link_to l(:button_clear), '#' %>
+      </li>
+      <% if @query.new_record? && User.current.allowed_to?(:save_queries, @project, :global => true) %>
+        <li>
+          <i class="icon-hdd"></i>
+          <%= link_to l(:button_save), '#' %>
+        </li>
+      <% end %>
+    </ul>
 <% end %>
 
 </div><!-- .title-bar-extras -->
