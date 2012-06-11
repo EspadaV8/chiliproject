@@ -1,12 +1,42 @@
-<div class="splitcontentleft">
+<% if @issue.custom_field_values.size > 0 %>
+<div class="row-fluid">
+<div class="span6">
 <% i = 0 %>
 <% split_on = (@issue.custom_field_values.size / 2.0).ceil - 1 %>
 <% @issue.custom_field_values.each do |value| %>
-	<p><%= custom_field_tag_with_label :issue, value %></p>
+  <% field_id = "custom_field_values_#{value.custom_field.id}" %>
+  <div class="control-group">
+    <% classes = 'control-label'
+       classes << ' required' unless !value.custom_field.is_required? %>
+    <%= label :issue, field_id, h(value.custom_field.name), :class => classes %>
+    <div class="controls">
+      <%=
+      field_name = l(:issue) + "[custom_field_values][#{value.custom_field.id}]"
+      field_format = Redmine::CustomFieldFormat.find_by_name(value.custom_field.field_format)
+      case field_format.try(:edit_as)
+      when "date"
+        text_field_tag(field_name, value.value, :id => field_id, :size => 10, :class => 'datepicker')
+      when "text"
+        text_area_tag(field_name, value.value, :id => field_id, :rows => 3)
+      when "bool"
+        hidden_field_tag(field_name, '0') + check_box_tag(field_name, '1', value.true?, :id => field_id)
+      when "list"
+        blank_option = value.custom_field.is_required? ?
+                         (value.custom_field.default_value.blank? ? "<option value=\"\">--- #{l(:actionview_instancetag_blank_option)} ---</option>" : '') :
+                         '<option></option>'
+        select_tag(field_name, blank_option + options_for_select(value.custom_field.possible_values_options(value.customized), value.value), :id => field_id)
+      else
+        text_field_tag(field_name, value.value, :id => field_id)
+      end
+      %>
+    </div>
+  </div>
 <% if i == split_on -%>
-</div><div class="splitcontentright">
+</div>
+<div class="span6">
 <% end -%>
 <% i += 1 -%>
 <% end -%>
 </div>
-<div style="clear:both;"> </div>
+</div>
+<% end %>

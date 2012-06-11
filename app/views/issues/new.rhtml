@@ -1,12 +1,22 @@
 <h2><%=l(:label_issue_new)%></h2>
 
-<% labelled_tabular_form_for :issue, @issue, :url => {:controller => 'issues', :action => 'create', :project_id => @project},
-                             :html => {:multipart => true, :id => 'issue-form', :class => 'tabular new-issue-form'} do |f| %>
+<div class="well">
+<% form_for :issue, @issue, :url => {:controller => 'issues', :action => 'create', :project_id => @project},
+                             :html => {:multipart => true, :id => 'issue-form', :class => 'form-horizontal new-issue-form'} do |f| %>
     <%= error_messages_for 'issue' %>
-    <div class="box">
     <%= render :partial => 'issues/form', :locals => {:f => f} %>
-    <%= send_notification_option %>
+
+    <div class="control-group">
+      <label class="control-label" for="send_notification"><%=  l(:label_notify_member_plural) %></label>
+      <div class="controls">
+        <label class="checkbox">
+          <%= hidden_field_tag('send_notification', '1', :id => nil) %>
+          <%= check_box_tag('send_notification', '1', true) %>
+          <%= l(:label_notify_member_plural) %>
+        </label>
+      </div>
     </div>
+
     <%= submit_tag l(:button_create) %>
     <%= submit_tag l(:button_create_and_continue), :name => 'continue' %>
     <%= link_to_remote l(:label_preview),
@@ -19,6 +29,7 @@
 
 		<%= javascript_tag "Form.Element.focus('issue_subject');" %>
 <% end %>
+</div>
 
 <div id="preview" class="wiki"></div>
 
