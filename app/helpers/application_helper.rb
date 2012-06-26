@@ -921,8 +921,9 @@ module ApplicationHelper
 
   def jquery_datepicker_settings
     start_of_week = Setting.start_of_week.to_s
+    start_of_week_string = start_of_week.present? ? "firstDay: '#{start_of_week}', " : ''
     script = javascript_tag("var datepickerSettings = {" +
-                   "firstDay: '" + start_of_week + "', " +
+                   start_of_week_string +
                    "showOn: 'both', " +
                    "buttonImage: '" + path_to_image('/images/calendar.png') + "', " +
                    "buttonImageOnly: true, " +
