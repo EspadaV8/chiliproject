@@ -921,15 +921,18 @@ module ApplicationHelper
 
   def jquery_datepicker_settings
     start_of_week = Setting.start_of_week.to_s
+    start_of_week_string = start_of_week.present? ? "firstDay: '#{start_of_week}', " : ''
     script = javascript_tag("var datepickerSettings = {" +
-                   "firstDay: '" + start_of_week + "', " +
+                   start_of_week_string +
                    "showOn: 'both', " +
                    "buttonImage: '" + path_to_image('/images/calendar.png') + "', " +
                    "buttonImageOnly: true, " +
                    "showButtonPanel: true, " +
                    "dateFormat: 'yy-mm-dd' " +
-                   "};" +
-                   "jQuery(function($){$.datepicker.setDefaults($.datepicker.regional['#{current_language.to_s}']); })")
+                   "}")
+    unless current_language.to_s == "en"
+      script << javascript_include_tag("libs/ui/i18n/jquery.ui.datepicker-#{current_language.to_s}.js")
+    end
     script
   end
 
