@@ -930,8 +930,9 @@ module ApplicationHelper
                    "showButtonPanel: true, " +
                    "dateFormat: 'yy-mm-dd' " +
                    "}")
-    unless current_language.to_s == "en"
-      script << javascript_include_tag("libs/ui/i18n/jquery.ui.datepicker-#{current_language.to_s}.js")
+    unless current_language == :en
+      jquery_locale = l("jquery.ui", :default => current_language.to_s)
+      script << javascript_include_tag("libs/ui/i18n/jquery.ui.datepicker-#{jquery_locale}.js")
     end
     script
   end
