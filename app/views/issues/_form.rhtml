@@ -20,6 +20,26 @@
                    :accesskey => accesskey(:edit),
                    :class => 'wiki-edit' %></p>
 </div>
+<script>
+(function($) {
+  $('#issue_description').autocomplete({
+    source: function(request, response) {
+      $.getJSON('/users/auto_complete',
+        {q: request.term},
+        function(data) {
+          response( $.map(data, function(item) {
+            console.log(item);
+            return {
+              label: '@' + item.user.login + " : " + item.user.firstname + " " + item.user.lastname,
+              value: '@' + item.user.login
+            }
+          }));
+        }
+      )
+    }
+  });
+})(jQuery);
+</script>
 
 <div id="attributes" class="attributes">
 	<%= render :partial => 'issues/attributes' %>

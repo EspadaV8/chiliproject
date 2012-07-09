@@ -57,7 +57,10 @@ class AutoCompletesController < ApplicationController
     end
 
     @users = user_finder.active.like(params[:q]).find(:all, :limit => 100) - @removed_users
-    render :layout => false
+    respond_to do |format|
+      format.html { render :layout => false }
+      format.js { render :json => @users.to_json }
+    end
   end
 
   def projects
