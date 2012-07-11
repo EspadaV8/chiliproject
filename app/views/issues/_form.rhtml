@@ -22,16 +22,15 @@
 </div>
 <script>
 (function($) {
-  $('#issue_description').autocomplete({
+  $('#issue_description').triggeredAutocomplete({
     source: function(request, response) {
       $.getJSON('/users/auto_complete',
         {q: request.term},
         function(data) {
           response( $.map(data, function(item) {
-            console.log(item);
             return {
               label: '@' + item.user.login + " : " + item.user.firstname + " " + item.user.lastname,
-              value: '@' + item.user.login
+              value: item.user.login
             }
           }));
         }
