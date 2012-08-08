@@ -663,4 +663,71 @@ jQuery(document).ready(function($) {
       $('input[type="date"]').datepicker(datepickerSettings)
           .filter('[disabled="disabled"]').datepicker('disable');
   }
+
+  var issueForm = $('#issue-form');
+  if(issueForm.size() > 0) {
+    console.log('enabling dragging');
+    issueForm.find('#attachments_fields').after('<div class="mask" />');
+    issueForm.css({
+      'position': 'relative',
+      'display': 'block'
+    });
+    issueForm.find('.mask').css({
+//      'display': 'none',
+//      'background': '#f00',
+//      'position': 'absolute',
+//      'top': 0,
+//      'right': 0,
+//      'width': '100%',
+//      'height': '100%'
+      'display': 'none',
+      'background': '#0f0',
+      'width': '100%',
+      'height': '100px'
+    });
+
+    $('body').on('dragenter', function(e) {
+      $("#issue-form .mask").fadeIn(125);
+    });
+    $('body').on('dragleave', function(e) {
+        /*
+         * We have to double-check the 'leave' event state because this event stupidly
+         * gets fired by JavaScript when you mouse over the child of a parent element;
+         * instead of firing a subsequent enter event for the child, JavaScript first
+         * fires a LEAVE event for the parent then an ENTER event for the child even
+         * though the mouse is still technically inside the parent bounds. If we trust
+         * the dragenter/dragleave events as-delivered, it leads to "flickering" when
+         * a child element (drop prompt) is hovered over as it becomes invisible,
+         * then visible then invisible again as that continually triggers the enter/leave
+         * events back to back. Instead, we use a 10px buffer around the window frame
+         * to capture the mouse leaving the window manually instead. (using 1px didn't
+         * work as the mouse can skip out of the window before hitting 1px with high
+         * enough acceleration).
+         */
+      var pageX = e.originalEvent.pageX;
+      var pageY = e.originalEvent.pageY;
+      if(pageX < 10 || pageY < 10 || $(window).width() - pageX < 10  || $(window).height() - pageY < 10) {
+        $("#issue-form .mask").fadeOut(125);
+      }
+    });
+    $("#issue-form .mask").on('dragover', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    });
+//    issueForm.on('dragenter dragover', function(e) {
+//      console.log('dragover');
+//      e.stopPropagation();
+//      e.preventDefault();
+//      $(this).find('.mask').show();
+//      return false;
+//    });
+//
+//    issueForm.on('dragend', function(e) {
+//      console.log('dragleave');
+//      e.stopPropagation();
+//      e.preventDefault();
+//      $(this).find('.mask').hide();
+//      return false;
+//    });
+  }
 });
