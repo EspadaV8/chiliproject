@@ -1,0 +1,12 @@
+require 'redmine'
+
+Redmine::Plugin.register :chiliproject_global_issue_button do
+  name 'Chiliproject Global Issue Button plugin'
+  author 'Author name'
+  description 'This is a plugin for ChiliProject'
+  version '0.0.1'
+  url 'http://example.com/path/to/plugin'
+  author_url 'http://example.com/about'
+
+  menu :top_menu, :chiliproject_global_issue_button, { :controller => 'issues', :action => 'new' }, :caption => 'New Issue'
+end
