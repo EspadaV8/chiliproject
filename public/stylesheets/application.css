@@ -4358,3 +4358,16 @@ div.progress .done {
 div.progress .done {
   background: #DEF0DE;
 }
+
+#attachments_form {
+  position: relative;
+}
+
+#attachments_form .mask {
+  background-color: #f00;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  display: none;
+}

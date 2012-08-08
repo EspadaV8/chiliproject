@@ -672,22 +672,9 @@ jQuery(document).ready(function($) {
       'position': 'relative',
       'display': 'block'
     });
-    issueForm.find('.mask').css({
-//      'display': 'none',
-//      'background': '#f00',
-//      'position': 'absolute',
-//      'top': 0,
-//      'right': 0,
-//      'width': '100%',
-//      'height': '100%'
-      'display': 'none',
-      'background': '#0f0',
-      'width': '100%',
-      'height': '100px'
-    });
 
     $('body').on('dragenter', function(e) {
-      $("#issue-form .mask").fadeIn(125);
+      $("#issue-form .mask").show();
     });
     $('body').on('dragleave', function(e) {
         /*
@@ -707,12 +694,18 @@ jQuery(document).ready(function($) {
       var pageX = e.originalEvent.pageX;
       var pageY = e.originalEvent.pageY;
       if(pageX < 10 || pageY < 10 || $(window).width() - pageX < 10  || $(window).height() - pageY < 10) {
-        $("#issue-form .mask").fadeOut(125);
+        $("#issue-form .mask").hide();
       }
     });
     $("#issue-form .mask").on('dragover', function(e) {
       e.stopPropagation();
       e.preventDefault();
+    }).on('drop', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $('#issue-form .mask').hide();
+      console.log(e.originalEvent.dataTransfer);
+      //
     });
 //    issueForm.on('dragenter dragover', function(e) {
 //      console.log('dragover');
